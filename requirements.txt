@@ -33,6 +33,9 @@ flask-sqlalchemy==2.4.1   # via flask-appbuilder, flask-migrate
 flask-talisman==0.7.0
 flask-wtf==0.14.2
 flask==1.1.1
+flask-oidc==1.4.0         # essential for oidc authentication
+superset==0.30.1
+mysqlclient               # required for connecting superset with SQL datasources
 geographiclib==1.50       # via geopy
 geopy==1.20.0
 gunicorn==20.0.4
