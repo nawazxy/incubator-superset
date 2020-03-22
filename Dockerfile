@@ -50,6 +50,14 @@ RUN cd /app/superset-frontend \
 
 # Next, copy in the rest and let webpack do its thing
 COPY ./superset-frontend /app/superset-frontend
+
+#######Copying stylesheets from the stylesheets folder to the container [My work]###########
+#COPY ./assets/stylesheets/variables.less /app/superset-frontend/stylesheets/less/
+#COPY ./assets/stylesheets/bootswatch.less /app/superset-frontend/stylesheets/less/cosmo
+#COPY ./assets/stylesheets/index.less /app/superset-frontend/stylesheets/less/
+#COPY ./assets/stylesheets/ /app/superset-frontend/stylesheets/
+################################[End of my work]##################################################
+
 # This is BY FAR the most expensive step (thanks Terser!)
 RUN cd /app/superset-frontend \
         && npm run build \
@@ -86,6 +94,7 @@ COPY --from=superset-node /app/superset/static/assets /app/superset/static/asset
 COPY --from=superset-node /app/superset-frontend /app/superset-frontend
 
 ## Lastly, let's install superset itself
+#COPY ./assets/superset_config.py /app/pythonpath
 COPY superset /app/superset
 COPY setup.py MANIFEST.in README.md /app/
 RUN cd /app \
@@ -111,7 +120,19 @@ FROM lean AS dev
 
 COPY ./requirements-dev.txt ./docker/requirements-extra.txt /app/
 
+#############Adding the images to the Docker Container [My work]##################
+#COPY ./assets/images/loading.gif /app/superset/static/assets/images/
+#COPY ./assets/images/fidor-logo.svg /app/superset/static/assets/images/
+#COPY ./assets/images/fidor-favicon.svg /app/superset/static/assets/images/
+#COPY ./assets/images/users-bg.png /app/superset/static/assets/images/
+#COPY ./assets/images/wave.svg /app/superset/static/assets/images/
+#COPY ./assets/images/wallpaper.png /app/superset/static/assets/images/
+
+#########################[End of my work]###############################################
+
 USER root
 RUN cd /app \
     && pip install --no-cache -r requirements-dev.txt -r requirements-extra.txt
+
+COPY ./assets/images/ /app/superset/static/assets/images/
 USER superset
